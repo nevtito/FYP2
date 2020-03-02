@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_stopwatch"
+            android:icon="@drawable/ic_menu_stopwatch"
+            android:title="@string/menu_stopwatch" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_menu_profile"
+            android:title="@string/menu_profile" />
+        <item
+            android:id="@+id/nav_graphics"
+            android:icon="@drawable/ic_menu_graph"
+            android:title="@string/menu_graphics" />
+        <item
+            android:id="@+id/nav_maps"
+            android:icon="@drawable/ic_menu_map"
+            android:title="@string/menu_maps" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_menu_history"
+            android:title="@string/menu_history" />
+        <item
+            android:id="@+id/nav_highscore"
+            android:icon="@drawable/ic_menu_highscore"
+            android:title="@string/menu_highscore" />
+
+        <item
+            android:id="@+id/nav_social"
+            android:icon="@drawable/ic_menu_social"
+            android:title="@string/menu_social" />
+    </group>
+</menu>

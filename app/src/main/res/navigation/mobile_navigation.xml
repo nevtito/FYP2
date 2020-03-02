@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_stopwatch">
+
+    <fragment
+        android:id="@+id/nav_stopwatch"
+        android:name="com.sta847.stickcycle.ui.stopwatch.StopwatchFragment"
+        android:label="@string/menu_stopwatch"
+        tools:layout="@layout/fragment_stopwatch" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.sta847.stickcycle.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_graphics"
+        android:name="com.sta847.stickcycle.ui.graphics.GraphicsFragment"
+        android:label="@string/menu_graphics"
+        tools:layout="@layout/fragment_graphics" />
+
+    <fragment
+        android:id="@+id/nav_maps"
+        android:name="com.sta847.stickcycle.ui.maps.MapsFragment"
+        android:label="@string/menu_maps"
+        tools:layout="@layout/fragment_maps" />
+
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.sta847.stickcycle.ui.history.HistoryFragment"
+        android:label="@string/menu_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/nav_highscore"
+        android:name="com.sta847.stickcycle.ui.highscore.HighscoreFragment"
+        android:label="@string/menu_highscore"
+        tools:layout="@layout/fragment_highscore" />
+
+    <fragment
+        android:id="@+id/nav_social"
+        android:name="com.sta847.stickcycle.ui.social.SocialFragment"
+        android:label="@string/menu_social"
+        tools:layout="@layout/social_fragment" />
+
+</navigation>
