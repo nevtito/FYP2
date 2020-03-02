@@ -47,4 +47,10 @@
         android:label="@string/menu_social"
         tools:layout="@layout/social_fragment" />
 
+    <fragment
+        android:id="@+id/nav_playground"
+        android:name="com.sta847.stickcycle.ui.playground.PlaygroundFragment"
+        android:label="@string/menu_playground"
+        tools:layout="@layout/playground_fragment" />
+
 </navigation>
