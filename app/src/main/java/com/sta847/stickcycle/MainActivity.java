@@ -13,7 +13,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.sta847.stickcycle.controller.ActivitiesIntentController;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -57,10 +56,6 @@ public class MainActivity extends AppCompatActivity
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        Log.d("testing log "," testing log");
-        ActivitiesIntentController test = new ActivitiesIntentController("test");
-        test.sendBroadcast(this.getIntent());
     }
 
     @Override
