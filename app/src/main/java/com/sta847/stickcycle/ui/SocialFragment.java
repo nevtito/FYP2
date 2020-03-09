@@ -1,4 +1,4 @@
-package com.sta847.stickcycle.ui.social;
+package com.sta847.stickcycle.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,22 +17,11 @@ import com.sta847.stickcycle.R;
 public class SocialFragment extends Fragment
 {
 
-    private SocialViewModel SocialViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        SocialViewModel = ViewModelProviders.of(this).get(SocialViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
         final TextView textView = root.findViewById(R.id.text_profile);
-        SocialViewModel.getText().observe(this, new Observer<String>()
-        {
-            @Override
-            public void onChanged(@Nullable String s)
-            {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 }

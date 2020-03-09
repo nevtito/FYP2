@@ -1,4 +1,4 @@
-package com.sta847.stickcycle.ui.maps;
+package com.sta847.stickcycle.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,23 +17,11 @@ import com.sta847.stickcycle.R;
 public class MapsFragment extends Fragment
 {
 
-    private MapsViewModel mapsViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        mapsViewModel =
-                ViewModelProviders.of(this).get(MapsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_maps, container, false);
         final TextView textView = root.findViewById(R.id.text_tools);
-        mapsViewModel.getText().observe(this, new Observer<String>()
-        {
-            @Override
-            public void onChanged(@Nullable String s)
-            {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 }

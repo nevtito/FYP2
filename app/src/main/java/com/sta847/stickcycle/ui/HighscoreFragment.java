@@ -1,4 +1,4 @@
-package com.sta847.stickcycle.ui.playground;
+package com.sta847.stickcycle.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,26 +14,26 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.sta847.stickcycle.R;
 
-public class PlaygroundFragment extends Fragment
+public class HighscoreFragment extends Fragment
 {
 
-    private PlaygroundViewModel PlaygroundViewModel;
+   // private HighscoreViewModel highscoreViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        PlaygroundViewModel =
-                ViewModelProviders.of(this).get(PlaygroundViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_maps, container, false);
-        final TextView textView = root.findViewById(R.id.text_tools);
-        PlaygroundViewModel.getText().observe(this, new Observer<String>()
+      //  highscoreViewModel =
+     //           ViewModelProviders.of(this).get(HighscoreViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_highscore, container, false);
+        final TextView textView = root.findViewById(R.id.text_send);
+     /*   highscoreViewModel.getText().observe(this, new Observer<String>()
         {
             @Override
             public void onChanged(@Nullable String s)
             {
                 textView.setText(s);
             }
-        });
+        });*/
         return root;
     }
 }
