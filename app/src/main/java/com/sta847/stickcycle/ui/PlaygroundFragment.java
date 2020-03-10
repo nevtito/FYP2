@@ -1,43 +1,97 @@
 package com.sta847.stickcycle.ui;
-import android.location.Location;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.google.android.gms.location.LocationListener;
 import com.sta847.stickcycle.MainActivity;
 import com.sta847.stickcycle.R;
 import com.sta847.stickcycle.controller.ManageSpeedometer;
+import java.util.Locale;
 
-public class PlaygroundFragment extends Fragment implements LocationListener
+public class PlaygroundFragment extends Fragment implements Runnable
 {
     private ManageSpeedometer manageSpeedometer;
-    private Float speed;
     private TextView textView;
+    private Button startButton, stopButton;
+    private Context context;
+
+    private String temporary;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
        View root = inflater.inflate(R.layout.playground_fragment, container, false);
-       manageSpeedometer = ((MainActivity) this.getActivity()).getManageSpeedometer();
+       try
+       {
+           manageSpeedometer = ((MainActivity) this.getActivity()).getManageSpeedometer();
+           context = this.getActivity().getApplicationContext();
 
-       Log.d("STA847 playground" , manageSpeedometer.getSpeed() + "");
-       textView = root.findViewById(R.id.tvPlayground);
-       speed = manageSpeedometer.getSpeed();
-       textView.setText(speed + "");
+           startButton = root.findViewById(R.id.startButton);
+           stopButton = root.findViewById(R.id.stopButton);
+
+           startButton.setOnClickListener(new View.OnClickListener()
+           {
+               @Override
+               public void onClick(View v)
+               {
+                   manageSpeedometer.startSpeedometer();
+               }
+           });
+           stopButton.setOnClickListener(new View.OnClickListener()
+           {
+               @Override
+               public void onClick(View v)
+               {
+                   manageSpeedometer.stopSpeedometer();
+               }
+           });
+
+           textView = root.findViewById(R.id.tvPlayground);
+           textView.setText(String.format((Locale.UK), "Speed is %.1f\n Latitude is %.1f\n Longitude is %.1f\n Distance is %.1f",
+                   manageSpeedometer.getSpeed(),
+                   manageSpeedometer.getLatitude(),
+                   manageSpeedometer.getLongitude(),
+                   manageSpeedometer.getDistanceTraveled()));
+
+           Runnable target;
+           Thread runSpeedometer = new Thread(this);
+           runSpeedometer.start();
+       }
+       catch(Exception exception)
+       {
+           Log.d("STA847: Playground", "Exception has been thrown " + exception.toString());
+       }
        return root;
+
     }
 
-    @Override
-    public void onLocationChanged(Location location)
-    {
-        speed = manageSpeedometer.getSpeed();
-        textView.setText(speed + "");
 
-        Log.d("STA847 " , manageSpeedometer.getSpeed() + "");
+
+    @Override
+    public void run()
+    {
+        Looper.prepare();
+        while(true)
+        {
+            textView.setText(String.format((Locale.UK),"Speed is %.4f Km/h" +
+                            "\n Latitude is %.1f" +
+                            "\n Longitude is %.1f" +
+                            "\n Distance is %.4f Km" +
+                            "\n DistanceRead is %.4f Km",
+                    manageSpeedometer.getSpeed(),
+                    manageSpeedometer.getLatitude(),
+                    manageSpeedometer.getLongitude(),
+                    manageSpeedometer.getDistanceTraveled(),
+                    manageSpeedometer.getDistanceBetweenReadings()));
+            Log.d("STA847: playground",  manageSpeedometer.getSpeed().toString());
+        }
     }
 }

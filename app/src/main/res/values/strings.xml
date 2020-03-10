@@ -19,4 +19,6 @@
     <string name="menu_highscore">HighScore</string>
     <string name="menu_social">Social</string>
     <string name="menu_playground">Playground</string>
+    <string name="start">Start</string>
+    <string name="stopButton">Stop</string>
 </resources>

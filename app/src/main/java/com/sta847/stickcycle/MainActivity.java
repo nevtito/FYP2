@@ -2,6 +2,8 @@ package com.sta847.stickcycle;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -10,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
@@ -20,6 +23,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.sta847.stickcycle.controller.ManagePermissions;
 import com.sta847.stickcycle.controller.ManageSpeedometer;
+import com.sta847.stickcycle.ui.PlaygroundFragment;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -74,8 +78,6 @@ public class MainActivity extends AppCompatActivity
 
         //start Speedometer Manager and its requirements
         manageSpeedometer = new ManageSpeedometer(this);
-        manageSpeedometer.setupRequirements();
-        Log.d("STA847 ", "speed is " + manageSpeedometer.getSpeed());
     }
 
 
@@ -124,5 +126,11 @@ public class MainActivity extends AppCompatActivity
     public void setManageSpeedometer(ManageSpeedometer manageSpeedometer)
     {
         this.manageSpeedometer = manageSpeedometer;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
