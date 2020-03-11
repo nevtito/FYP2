@@ -11,14 +11,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.sta847.stickcycle.MainActivity;
 import com.sta847.stickcycle.model.ApplicationConstants;
 
-public class ManageSpeedometer implements LocationListener
+public class ManageSpeedometer implements LocationListener, GoogleApiClient.ConnectionCallbacks
 {
     private Float speed;
     private Double latitude;
@@ -30,6 +31,9 @@ public class ManageSpeedometer implements LocationListener
     private Double distanceBetweenReadings;
     private boolean isRunning;
 
+    //experiment
+    private double accuracy;
+
     public ManageSpeedometer(MainActivity mainActivity)
     {
         super();
@@ -39,24 +43,29 @@ public class ManageSpeedometer implements LocationListener
         this.latitude = 0.0;
         this.longitude = 0.0;
         this.distanceTraveled = 0.0;
-        lastLocation = null;
+        this.lastLocation = null;
         this.distanceBetweenReadings = 0.0;
         this.isRunning = false;
+
+        //experiment
+        this.accuracy = 0.0;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onLocationChanged(Location newLocation)
     {
-        if(isRunning)
+        if (isRunning)
         {
             if (newLocation != null)
             {
                 speed = newLocation.getSpeed() * 3.6f;
-                
                 latitude = newLocation.getLatitude();
                 longitude = newLocation.getLongitude();
-                
+
+                //experiment
+                accuracy = newLocation.getAccuracy();
+
                 if (lastLocation == null)
                 {
                     lastLocation = newLocation;
@@ -64,9 +73,14 @@ public class ManageSpeedometer implements LocationListener
                     distanceBetweenReadings = 0.0;
                 } else
                 {
-                    distanceTraveled = distanceTraveled + (lastLocation.distanceTo(newLocation));
-                    distanceBetweenReadings = Double.valueOf(lastLocation.distanceTo(newLocation));
-                    lastLocation = newLocation;
+                    if(newLocation.getAccuracy() <= 5.0)
+                    {
+                        distanceTraveled = distanceTraveled + (lastLocation.distanceTo(newLocation));
+                        distanceBetweenReadings = Double.valueOf(lastLocation.distanceTo(newLocation));
+                        lastLocation = newLocation;
+
+                        Log.d("STA847: ManSpeed", "Accuracy is " + newLocation.getAccuracy());
+                    }
                 }
                 Log.d("sta847: ManSpeed", "newLocation is not null " + newLocation.getSpeed() + " " + newLocation.getLatitude());
             } else
@@ -171,14 +185,14 @@ public class ManageSpeedometer implements LocationListener
 
     public void stopSpeedometer()
     {
-        isRunning = false;
+        this.isRunning = false;
         this.speed = 0.0f;
         this.latitude = 0.0;
         this.longitude = 0.0;
         this.distanceTraveled = 0.0;
-        lastLocation = null;
+        this.lastLocation = null;
         this.distanceBetweenReadings = 0.0;
-        locationManager.removeUpdates(this);
+        this.locationManager.removeUpdates(this);
         Log.d("STA847: ", "Stop update for locations");
     }
 
@@ -202,8 +216,26 @@ public class ManageSpeedometer implements LocationListener
         isRunning = running;
     }
 
-    public void setPrecision()
+    //experiment
+    public double getAccuracy()
     {
-        //this.locationManager
+        return accuracy;
+    }
+
+    public void setAccuracy(double accuracy)
+    {
+        this.accuracy = accuracy;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle)
+    {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+
     }
 }

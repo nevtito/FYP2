@@ -55,11 +55,18 @@ public class PlaygroundFragment extends Fragment implements Runnable
            });
 
            textView = root.findViewById(R.id.tvPlayground);
-           textView.setText(String.format((Locale.UK), "Speed is %.1f\n Latitude is %.1f\n Longitude is %.1f\n Distance is %.1f",
+           textView.setText(String.format((Locale.UK),"Speed is %.4f Km/h" +
+                           "\n Latitude is %.1f" +
+                           "\n Longitude is %.1f" +
+                           "\n Distance is %.4f Km" +
+                           "\n DistanceRead is %.4f Km" +
+                           "\n Accuracy is %.4f Km",
                    manageSpeedometer.getSpeed(),
                    manageSpeedometer.getLatitude(),
                    manageSpeedometer.getLongitude(),
-                   manageSpeedometer.getDistanceTraveled()));
+                   manageSpeedometer.getDistanceTraveled(),
+                   manageSpeedometer.getDistanceBetweenReadings(),
+                   manageSpeedometer.getAccuracy()));
 
            Runnable target;
            Thread runSpeedometer = new Thread(this);
@@ -85,13 +92,16 @@ public class PlaygroundFragment extends Fragment implements Runnable
                             "\n Latitude is %.1f" +
                             "\n Longitude is %.1f" +
                             "\n Distance is %.4f Km" +
-                            "\n DistanceRead is %.4f Km",
+                            "\n DistanceRead is %.4f Km" +
+                            "\n Accuracy is %.4f Km",
                     manageSpeedometer.getSpeed(),
                     manageSpeedometer.getLatitude(),
                     manageSpeedometer.getLongitude(),
                     manageSpeedometer.getDistanceTraveled(),
-                    manageSpeedometer.getDistanceBetweenReadings()));
-            Log.d("STA847: playground",  manageSpeedometer.getSpeed().toString());
+                    manageSpeedometer.getDistanceBetweenReadings(),
+                    manageSpeedometer.getAccuracy()));
+            Log.d("STA847: playground ",  manageSpeedometer.getSpeed().toString());
+            Log.d("STA847: accuracy ",  Double.toString(manageSpeedometer.getAccuracy()));
         }
     }
 }
