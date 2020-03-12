@@ -2,24 +2,20 @@ package com.sta847.stickcycle.controller;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.sta847.stickcycle.MainActivity;
 import com.sta847.stickcycle.model.ApplicationConstants;
 
-public class ManageSpeedometer implements LocationListener, GoogleApiClient.ConnectionCallbacks
+public class ManageSpeedometer implements LocationListener
 {
     private Float speed;
     private Double latitude;
@@ -30,9 +26,8 @@ public class ManageSpeedometer implements LocationListener, GoogleApiClient.Conn
     private Double distanceTraveled;
     private Double distanceBetweenReadings;
     private boolean isRunning;
-
-    //experiment
-    private double accuracy;
+    private double radiusPrecision;
+    private Criteria criteria;
 
     public ManageSpeedometer(MainActivity mainActivity)
     {
@@ -46,9 +41,8 @@ public class ManageSpeedometer implements LocationListener, GoogleApiClient.Conn
         this.lastLocation = null;
         this.distanceBetweenReadings = 0.0;
         this.isRunning = false;
-
-        //experiment
-        this.accuracy = 0.0;
+        this.radiusPrecision = 0.0;
+        this.criteria = new Criteria();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -63,9 +57,6 @@ public class ManageSpeedometer implements LocationListener, GoogleApiClient.Conn
                 latitude = newLocation.getLatitude();
                 longitude = newLocation.getLongitude();
 
-                //experiment
-                accuracy = newLocation.getAccuracy();
-
                 if (lastLocation == null)
                 {
                     lastLocation = newLocation;
@@ -73,7 +64,7 @@ public class ManageSpeedometer implements LocationListener, GoogleApiClient.Conn
                     distanceBetweenReadings = 0.0;
                 } else
                 {
-                    if(newLocation.getAccuracy() <= 5.0)
+                    if(newLocation.getAccuracy() <= radiusPrecision)
                     {
                         distanceTraveled = distanceTraveled + (lastLocation.distanceTo(newLocation));
                         distanceBetweenReadings = Double.valueOf(lastLocation.distanceTo(newLocation));
@@ -88,6 +79,11 @@ public class ManageSpeedometer implements LocationListener, GoogleApiClient.Conn
                 speed = 0.0f;
                 Log.d("sta847: ManSpeed", "For some reason the newLocation is null");
             }
+        }
+        else
+        {
+            //what to if it is not running.
+            Log.d("STA847 ManSpeed", "Incomplete");
         }
     }
 
@@ -177,6 +173,7 @@ public class ManageSpeedometer implements LocationListener, GoogleApiClient.Conn
                 Log.d("STA847: ", "Manage speedometer does not have permission");
                 return;
             }
+
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, ApplicationConstants.MINIMUM_LOCATION_TIME, ApplicationConstants.MINIMUM_LOCATION_DISTANCE, this);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,ApplicationConstants.MINIMUM_LOCATION_TIME,ApplicationConstants.MINIMUM_LOCATION_DISTANCE,this);
             Log.d("STA847 ", "Request update for locations");
@@ -193,12 +190,8 @@ public class ManageSpeedometer implements LocationListener, GoogleApiClient.Conn
         this.lastLocation = null;
         this.distanceBetweenReadings = 0.0;
         this.locationManager.removeUpdates(this);
+        this.radiusPrecision = 0.0;
         Log.d("STA847: ", "Stop update for locations");
-    }
-
-    public void pauseSpeedometer()
-    {
-
     }
 
     public Double getDistanceBetweenReadings()
@@ -216,26 +209,30 @@ public class ManageSpeedometer implements LocationListener, GoogleApiClient.Conn
         isRunning = running;
     }
 
-    //experiment
-    public double getAccuracy()
+    public double getRadiusPrecision()
     {
-        return accuracy;
+        return radiusPrecision;
     }
 
-    public void setAccuracy(double accuracy)
+    public void setRadiusPrecision(double radiusPrecision)
     {
-        this.accuracy = accuracy;
+        this.radiusPrecision = radiusPrecision;
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle)
+    public void pauseSpeedometer()
     {
 
     }
 
-    @Override
-    public void onConnectionSuspended(int i)
+    private void setCriteriaFineAccuracy()
     {
-
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        criteria.setAltitudeRequired(true);
+        criteria.setSpeedRequired(true);
+        criteria.setCostAllowed(true);
+        criteria.setBearingRequired(true);
+        criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
+        criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
     }
 }

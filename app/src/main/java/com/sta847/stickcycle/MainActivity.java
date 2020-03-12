@@ -1,9 +1,5 @@
 package com.sta847.stickcycle;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -14,7 +10,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,7 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.sta847.stickcycle.controller.ManagePermissions;
 import com.sta847.stickcycle.controller.ManageSpeedometer;
-import com.sta847.stickcycle.ui.PlaygroundFragment;
+import com.sta847.stickcycle.model.ApplicationConstants;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -71,13 +66,16 @@ public class MainActivity extends AppCompatActivity
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
         //get permissions
         managePermissions = new ManagePermissions();
         managePermissions.getLocationPermission(this);
 
         //start Speedometer Manager and its requirements
         manageSpeedometer = new ManageSpeedometer(this);
+
+        //experiment
+        Log.d("STA847 ManSpeed", "Incomplete");
+        manageSpeedometer.setRadiusPrecision(ApplicationConstants.LOW_ACCURACY);
     }
 
 

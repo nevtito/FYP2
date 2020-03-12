@@ -1,4 +1,4 @@
-package com.sta847.stickcycle.ui;
+package com.sta847.stickcycle.ui_fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.sta847.stickcycle.MainActivity;
@@ -60,13 +60,13 @@ public class PlaygroundFragment extends Fragment implements Runnable
                            "\n Longitude is %.1f" +
                            "\n Distance is %.4f Km" +
                            "\n DistanceRead is %.4f Km" +
-                           "\n Accuracy is %.4f Km",
+                           "\n Accuracy is %%.0f m",
                    manageSpeedometer.getSpeed(),
                    manageSpeedometer.getLatitude(),
                    manageSpeedometer.getLongitude(),
-                   manageSpeedometer.getDistanceTraveled(),
-                   manageSpeedometer.getDistanceBetweenReadings(),
-                   manageSpeedometer.getAccuracy()));
+                   (manageSpeedometer.getDistanceTraveled()/1000),
+                   (manageSpeedometer.getDistanceBetweenReadings()/1000),
+                   manageSpeedometer.getRadiusPrecision()));
 
            Runnable target;
            Thread runSpeedometer = new Thread(this);
@@ -88,20 +88,20 @@ public class PlaygroundFragment extends Fragment implements Runnable
         Looper.prepare();
         while(true)
         {
-            textView.setText(String.format((Locale.UK),"Speed is %.4f Km/h" +
+            textView.setText(String.format((Locale.UK),"Speed is %.1f Km/h" +
                             "\n Latitude is %.1f" +
                             "\n Longitude is %.1f" +
-                            "\n Distance is %.4f Km" +
-                            "\n DistanceRead is %.4f Km" +
-                            "\n Accuracy is %.4f Km",
+                            "\n Distance is %.1f Km" +
+                            "\n DistanceRead is %.1f m" +
+                            "\n Accuracy is %.0f m",
                     manageSpeedometer.getSpeed(),
                     manageSpeedometer.getLatitude(),
                     manageSpeedometer.getLongitude(),
-                    manageSpeedometer.getDistanceTraveled(),
-                    manageSpeedometer.getDistanceBetweenReadings(),
-                    manageSpeedometer.getAccuracy()));
+                    (manageSpeedometer.getDistanceTraveled()/1000),
+                    (manageSpeedometer.getDistanceBetweenReadings()/1000),
+                    manageSpeedometer.getRadiusPrecision()));
             Log.d("STA847: playground ",  manageSpeedometer.getSpeed().toString());
-            Log.d("STA847: accuracy ",  Double.toString(manageSpeedometer.getAccuracy()));
+            Log.d("STA847: accuracy ",  Double.toString(manageSpeedometer.getRadiusPrecision()));
         }
     }
 }
