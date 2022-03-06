@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_stopwatch"
-        android:name="com.sta847.stickcycle.ui_fragments.StopwatchFragment"
+        android:name="com.sta847.stickcycle.ui_fragments.ActivityLoggerFragment"
         android:label="@string/menu_stopwatch"
-        tools:layout="@layout/fragment_stopwatch" />
+        tools:layout="@layout/fragment_activity_logger" />
 
     <fragment
         android:id="@+id/nav_profile"
